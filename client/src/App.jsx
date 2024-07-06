@@ -1,5 +1,6 @@
 import AuthLayout from './components/AuthLayout'
 import MainLayout from './components/MainLayout'
+import LoginPage from './pages/LoginPage'
 import VerificationPage from './pages/VerificationPage'
 import {BrowserRouter, Route, Routes} from "react-router-dom"
 
@@ -8,8 +9,8 @@ function App() {
     <BrowserRouter>
     <Routes>
     <Route element={<AuthLayout />} >
-    {/* <Route path="/signin" element={<SignIn />} />
-    <Route path="/signup" element={<SignUp />} /> */}
+    <Route path="/signin" element={<LoginPage />} />
+    {/* <Route path="/signup" element={<SignUp />} /> */}
     <Route path="/verification" element={<VerificationPage />} />
     </Route>
     
