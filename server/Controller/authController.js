@@ -1,4 +1,3 @@
-const { response } = require("express");
 const userModel = require("../Model/userModel")
 const transporter = require("../Utils/transporter")
 const signUp = async(req,res)=>{
