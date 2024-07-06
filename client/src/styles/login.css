@@ -11,9 +11,8 @@ body, html {
   align-items: center;
   height: 100%;
   width: 100%;
-  background: linear-gradient(#ffdb0f, #fa9b15ce, #f85d03ce, #fc3802ce);
+  background: linear-gradient(to top, #fc3802ce, #f85d03ce, #fa9b15ce, #ffdb0f);
 }
-
 
 .login-form {
   background: white;
@@ -55,7 +54,7 @@ body, html {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  padding-right: 40px;
+  padding-right: 40px; /* Ensure there is space for the eye icon */
 }
 
 .form-group .forgot-password {
@@ -73,18 +72,10 @@ body, html {
 .eye-icon {
   font-size: 18px;
   color: #363636;
-  top: 50%;
-  right: 10px;
-  padding: 5px;
-  transform: translateY(-30%);
   position: absolute;
+  top: 60%;
+  right: 10px;
   cursor: pointer;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: all;
-  width: 40px;
 }
 
 .login-button {
