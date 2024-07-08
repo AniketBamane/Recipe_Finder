@@ -2,15 +2,20 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import '../styles/login.css';
+import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const LoginPage = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [loading,setLoading] = useState(false);
+  const navigate = useNavigate()
 
   const handleLogin = async (event) => {
     event.preventDefault();
+    setLoading(true);
     setErrorMessage('');
 
     if (!validateUsernameOrEmail(usernameOrEmail)) {
@@ -24,12 +29,12 @@ const LoginPage = () => {
     }
 
     const formData = {
-      usernameOrEmail,
+      email: usernameOrEmail,
       password
     };
 
     try {
-      const response = await fetch('login-endpoint', {
+      const response = await fetch('http://localhost:3000/api/auth/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -37,14 +42,31 @@ const LoginPage = () => {
         body: JSON.stringify(formData)
       });
       const data = await response.json();
-      if (data.success) {
-        window.location.href = 'dashboard.html';
+      if (response.ok) {
+        toast.success('Account logged in successfully', {
+          duration: 2000,
+          style: {
+            background: 'green',
+            color: 'white',
+          },
+          icon: '🥳',
+        });
+        setLoading(false)
+        navigate('/');
       } else {
-        setErrorMessage(data.message || 'Login failed. Please try again.');
+        toast.error(data.message, {
+          duration: 2000,
+          style: {
+            background: "#FF474C",
+            color: "white",
+          },
+        });
+        setLoading(false)
       }
     } catch (error) {
       console.error('Error:', error);
       setErrorMessage('An error occurred. Please try again.');
+      setLoading(false)
     }
   };
 
@@ -60,9 +82,10 @@ const LoginPage = () => {
       <h2><em>Great to have you back!</em></h2>
       <form onSubmit={handleLogin}>
         <div className="form-group">
-          <label htmlFor="usernameOrEmail">Username or Email:</label>
+          <label htmlFor="usernameOrEmail">Email:</label>
           <input
             type="text"
+            disabled={loading}
             id="usernameOrEmail"
             value={usernameOrEmail}
             onChange={(e) => setUsernameOrEmail(e.target.value)}
@@ -71,26 +94,25 @@ const LoginPage = () => {
         </div>
         <div className="form-group">
           <label htmlFor="password">Password:</label>
-          <input
-            type={passwordVisible ? 'text' : 'password'}
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <FontAwesomeIcon
-            icon={passwordVisible ? faEye : faEyeSlash}
-            className="eye-icon"
-            onClick={() => setPasswordVisible(!passwordVisible)}
-          />
+            <input
+              type={passwordVisible ? 'text' : 'password'}
+              id="password"
+              value={password}
+              disabled={loading}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <FontAwesomeIcon
+              icon={passwordVisible ? faEye : faEyeSlash}
+              className="eye-icon"
+              onClick={() => setPasswordVisible(!passwordVisible)}
+            />
         </div>
-        <div className="form-group">
-          <a href="forgot-password.html" className="forgot-password">Forgot password?</a>
-        </div>
-        <button type="submit" className="login-button">Log in</button>
+
+        <button  disabled={loading} type="submit" className="login-button">{loading ? "logging in ..." :"Log in"}</button>
         {errorMessage && <div className="error-message">{errorMessage}</div>}
       </form>
-      <p className="signup-text">Don't have an account? <a href="signup.html">Signup now</a></p>
+      <p className="signup-text">Don't have an account? <Link to={"/signup"}>Signup now</Link></p>
     </div>
   );
 };

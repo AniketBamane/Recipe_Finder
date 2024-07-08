@@ -35,7 +35,7 @@ const signIn = async (req, res) => {
 const verifyEmail = async(req, res, next) => {
     try{
       const {email} = req.body;
-      const random = Math.floor(Math.random() * 900000) + 100000
+      const random = Math.floor(Math.random() * 9000) + 1000
       const mailOptions = {
         from: 'aniketbamane696@gmail.com',
         to: email,

@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/veri.css"; // Import the CSS file
+import toast from "react-hot-toast";
 
 const VerificationPage = () => {
+  const navigate = useNavigate()
+  const location = useLocation();
+  const [loading,setLoading] = useState(false)
   const [inputs, setInputs] = useState(["", "", "", ""]);
   const [isButtonActive, setIsButtonActive] = useState(false);
+  const state = location.state || {} ;
 
   useEffect(() => {
     document.getElementById("input-0").focus();
@@ -43,9 +49,53 @@ const VerificationPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
-    alert(`OTP Submitted: ${inputs.join("")}`);
+    setLoading(true)
+    const inputedCode = inputs.join("")
+    const verificationCode = state.verificationCode
+    console.log(typeof(verificationCode),typeof(inputedCode))
+    if(verificationCode == inputedCode) {
+      const response = await fetch("http://localhost:3000/api/auth/signup",{
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: state.email,password:state.password,username:state.username})
+      })
+      const data = await response.json()
+      if(response.ok) {
+        toast.success('Account created successfully', {
+          duration: 2000,
+          style: {
+            background: 'green',
+            color: 'white',
+          },
+          icon: '🥳',
+        });
+        setLoading(false)
+        navigate("/")
+      }else{
+        toast.error(data.message, {
+          duration: 2000,
+          style: {
+            background: "#FF474C",
+            color: "white",
+          },
+        });
+        setLoading(false)
+      }
+    }
+    else {
+      toast.error("invalid OTP code !", {
+        duration: 2000,
+        style: {
+          background: "#FF474C",
+          color: "white",
+        },
+      });
+      setLoading(false)
+    }
   };
 
   return (
@@ -69,7 +119,7 @@ const VerificationPage = () => {
           ))}
         </div>
         <button type="submit" className={isButtonActive ? "active" : ""} disabled={!isButtonActive}>
-          Verify OTP
+          {loading ? "verifying code ....":"Verify code"}
         </button>
       </form>
     </div>
