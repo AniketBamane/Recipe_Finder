@@ -1,4 +1,79 @@
-//function to retrieve favorite recipes from localStorage
+//sample data to test the favorites page
+const sampleFavorites = [
+    {
+        id: '1',
+        title: 'Spaghetti Bolognese',
+        prepTime: 30,
+        difficulty: 'Medium',
+        image: 'https://via.placeholder.com/300',
+        rating: 4.5,
+        reviewCount: 150,
+        mealType: 'Dinner',
+        tags: ['Pasta', 'Italian']
+    },
+    {
+        id: '2',
+        title: 'Chicken Salad',
+        prepTime: 15,
+        difficulty: 'Easy',
+        image: 'https://via.placeholder.com/300',
+        rating: 4.7,
+        reviewCount: 80,
+        mealType: 'Lunch',
+        tags: ['Salad', 'Healthy']
+    },
+    {
+        id: '3',
+        title: 'Chole Bhature',
+        prepTime: 30,
+        difficulty: 'Medium',
+        image: 'https://via.placeholder.com/300',
+        rating: 4.5,
+        reviewCount: 150,
+        mealType: 'Dinner',
+        tags: ['Kulcha', 'Indian']
+    },
+    {
+        id: '4',
+        title: 'Chicken Curry',
+        prepTime: 15,
+        difficulty: 'Easy',
+        image: 'https://via.placeholder.com/300',
+        rating: 4.7,
+        reviewCount: 80,
+        mealType: 'Lunch',
+        tags: ['Salad', 'Healthy']
+    },
+    {
+        id: '5',
+        title: 'Vegetable Stir Fry',
+        prepTime: 20,
+        difficulty: 'Easy',
+        image: 'https://via.placeholder.com/300',
+        rating: 4.8,
+        reviewCount: 100,
+        mealType: 'Dinner',
+        tags: ['Vegetarian', 'Asian']
+    },
+    {
+        id: '6',
+        title: 'Beef Tacos',
+        prepTime: 25,
+        difficulty: 'Medium',
+        image: 'https://via.placeholder.com/300',
+        rating: 4.6,
+        reviewCount: 90,
+        mealType: 'Lunch',
+        tags: ['Mexican', 'Tacos']
+    }
+];
+
+//function to add sample data to localstorage
+function addSampleDataToLocalStorage() {
+    localStorage.setItem('favoriteRecipes', JSON.stringify(sampleFavorites));
+}
+
+//function to retrieve fav recipes from localstorage
 function getFavoriteRecipes() {
     return JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
 }
@@ -55,7 +130,7 @@ function openRecipeDetails(recipe) {
     `);
 }
 
-//function to filter recipes based on search 
+//function to filter recipes based on the search 
 function filterRecipes(searchTerm) {
     const favoriteRecipes = getFavoriteRecipes();
     const filteredRecipes = favoriteRecipes.filter(recipe =>
@@ -64,8 +139,13 @@ function filterRecipes(searchTerm) {
     displayFavoriteRecipes(filteredRecipes);
 }
 
-//initialize fav recipes on page 
+//initialize fav recipes on page load
 document.addEventListener('DOMContentLoaded', () => {
+    // Uncomment the line below if you want to add sample data only once
+    // if (!localStorage.getItem('favoriteRecipes')) {
+    addSampleDataToLocalStorage();
+    // }
+
     const favoriteRecipes = getFavoriteRecipes();
     displayFavoriteRecipes(favoriteRecipes);
 
@@ -74,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         filterRecipes(e.target.value);
     });
 
-    //event listener for the Favorites link
+    //event listener for the favorites link
     const favoritesLink = document.getElementById('favorites-link');
     favoritesLink.addEventListener('click', (event) => {
         event.preventDefault(); 
@@ -85,3 +165,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
