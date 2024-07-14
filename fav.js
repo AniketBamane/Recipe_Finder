@@ -141,11 +141,8 @@ function filterRecipes(searchTerm) {
 
 //initialize fav recipes on page load
 document.addEventListener('DOMContentLoaded', () => {
-    // Uncomment the line below if you want to add sample data only once
-    // if (!localStorage.getItem('favoriteRecipes')) {
     addSampleDataToLocalStorage();
-    // }
-
+  
     const favoriteRecipes = getFavoriteRecipes();
     displayFavoriteRecipes(favoriteRecipes);
 
