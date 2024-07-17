@@ -4,6 +4,8 @@ const express = require('express');
 const cors = require('cors')
 //routers 
 const authRouter = require("./Router/authRouter")
+const favouriteRouter = require("./Router/favouriteRouter")
+const recipeRouter = require("./Router/recipeRouter")
 // const quoteRouter = require("./Router/qouteRouter")
 //middleware
 const errorMiddleware = require("./Middleware/errorMiddleware")
@@ -12,6 +14,8 @@ app.use(express.json())
 app.use(cors())
 
 app.use("/api/auth", authRouter)
+app.use("/api/recipe", recipeRouter)
+app.use("/api/favourite", favouriteRouter)
 // app.use("/api/quote", quoteRouter)
 
 app.use(errorMiddleware)

@@ -1,0 +1,117 @@
+/* Basic reset and box-sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  font-family: Arial, sans-serif;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.navbar {
+  width: 100%;
+  background-color: #333;
+  color: white;
+  display: flex;
+  z-index: 1;
+  border-radius: 30px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  position: sticky;
+  top: 0;
+}
+
+.navbarLogo {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  text-decoration: underline;
+}
+
+.navbarMenu {
+  display: flex;
+  gap: 20px;
+}
+
+.navbarItem {
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.navbarItem:hover {
+  color: #ddd;
+}
+
+.navbarItem a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.menuIcon {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.drawer {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
+.drawerOpen {
+  display: block;
+}
+
+.cancelItem{
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  top: 5px;
+  font-size: 20px;
+  border-radius: 50%;
+  background-color: white;
+  color: black;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.drawerItem {
+  font-size: 18px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.drawerItem a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (max-width: 1024px) {
+  .navbarMenu {
+    display: none;
+  }
+
+  .menuIcon {
+    display: block;
+  }
+}

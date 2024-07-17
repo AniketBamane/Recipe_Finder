@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/veri.css"; // Import the CSS file
 import toast from "react-hot-toast";
+import { recipeContext } from "../store/recipeContext";
 
 const VerificationPage = () => {
+  const {login} = useContext(recipeContext)
   const navigate = useNavigate()
   const location = useLocation();
   const [loading,setLoading] = useState(false)
@@ -74,6 +76,7 @@ const VerificationPage = () => {
           icon: '🥳',
         });
         setLoading(false)
+        login(data.token)
         navigate("/")
       }else{
         toast.error(data.message, {

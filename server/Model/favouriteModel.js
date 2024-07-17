@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 
 const favouriteSchema = mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User"},
   recipeId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Recipe",
-    required: true,
   },
   addedAt: { type: Date, default: Date.now },
 });

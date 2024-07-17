@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import '../styles/login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { recipeContext } from '../store/recipeContext';
 
 const LoginPage = () => {
+  const {login} = useContext(recipeContext)
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -52,6 +54,7 @@ const LoginPage = () => {
           icon: '🥳',
         });
         setLoading(false)
+        login(data.token)
         navigate('/');
       } else {
         toast.error(data.message, {

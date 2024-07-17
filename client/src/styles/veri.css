@@ -11,7 +11,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(#ffdb0f, #fa9b15ce, #f85d03ce, #fc3802ce);
+  background-color: white;
 }
 :where(.container, form, .input-field, header) {
   display: flex;

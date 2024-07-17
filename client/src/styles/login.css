@@ -11,7 +11,6 @@ body, html {
   align-items: center;
   height: 100%;
   width: 100%;
-  background: linear-gradient(to top, #fc3802ce, #f85d03ce, #fa9b15ce, #ffdb0f);
 }
 
 .login-form {
