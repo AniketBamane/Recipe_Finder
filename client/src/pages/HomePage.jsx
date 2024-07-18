@@ -114,13 +114,34 @@ const HomePage = () => {
     };
   }, [loading, hasMore]);
 
+  // New share function
+  const shareRecipe = (recipe) => {
+    const recipeUrl = `http://localhost:5173/recipe/${recipe._id}`;
+    if (navigator.share) {
+      navigator.share({
+        title: recipe.name,
+        text: `Check out this recipe: ${recipe.name}`,
+        url: recipeUrl,
+      }).catch((error) => console.error('Error sharing:', error));
+    } else {
+      navigator.clipboard.writeText(recipeUrl).then(() => {
+        toast.success('Recipe link copied to clipboard!', {
+          duration: 2000,
+          style: {
+            background: 'blue',
+            color: 'white',
+          },
+        });
+      });
+    }
+  };
+
   return (
     <div className={home.homepage}>
       <Navbar />
       <input type="text" className={home.searchBox} placeholder="Search recipes..." />
       <div className={home.recipeCardsContainer}>
         {recipes.map((recipe, index) => (
-         
           <div className={home.recipeCard} key={index}>
             <img src={recipe.image} alt={recipe.name} className={home.recipeImage} />
             <div className={home.recipeInfo}>
@@ -147,25 +168,26 @@ const HomePage = () => {
                 ))}
               </div>
               <Link to={`recipe/${recipe._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <div
-              style={
-                {
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "15%",
-                  marginTop:"15px",
-                  width: "100%",
-                  cursor: "pointer",
-                  backgroundColor: "#f5f5f5",
-                  borderRadius: "5px",
-                  fontSize: "20px",
-                  fontWeight: "bold",
-                  color: "#333"
-                }
-              }
-              >see more..</div>
-          </Link>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "15%",
+                    marginTop: "15px",
+                    width: "100%",
+                    cursor: "pointer",
+                    backgroundColor: "#f5f5f5",
+                    borderRadius: "5px",
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                    color: "#333"
+                  }}
+                >
+                  see more..
+                </div>
+              </Link>
+              <button onClick={() => shareRecipe(recipe)} className={home.shareButton}>Share</button>
             </div>
           </div>
         ))}
