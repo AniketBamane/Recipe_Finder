@@ -11,6 +11,7 @@ const HomePage = () => {
   const [skip, setSkip] = useState(0); // items to skip
   const [loading, setLoading] = useState(false); // loading state
   const [hasMore, setHasMore] = useState(true); // track if more recipes are available
+  const [searchQuery, setSearchQuery] = useState(''); // state for search query
   const loader = useRef(null);
 
   const addtoFavourite = async (recipeId) => {
@@ -54,10 +55,10 @@ const HomePage = () => {
     }
   }
 
-  const getAllRecipes = async (skip) => {
+  const getAllRecipes = async (skip, search) => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:3000/api/recipe/getallrecipes?limit=8&skip=${skip}`, {
+      const response = await fetch(`http://localhost:3000/api/recipe/getallrecipes?limit=8&skip=${skip}&search=${search}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -76,7 +77,7 @@ const HomePage = () => {
         if (data.length === 0) {
           setHasMore(false); // No more recipes to load
         } else {
-          setRecipes((prevRecipes) => [...prevRecipes, ...data]); // append new recipes
+          setRecipes((prevRecipes) => skip === 0 ? data : [...prevRecipes, ...data]); // append new recipes or reset on new search
         }
       }
     } catch (err) {
@@ -93,8 +94,10 @@ const HomePage = () => {
   }
 
   useEffect(() => {
-    getAllRecipes(skip);
-  }, [skip]);
+    setSkip(0); // Reset skip when search query changes
+    setHasMore(true); // Reset hasMore when search query changes
+    getAllRecipes(0, searchQuery); // Fetch with search query
+  }, [searchQuery]);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -139,7 +142,13 @@ const HomePage = () => {
   return (
     <div className={home.homepage}>
       <Navbar />
-      <input type="text" className={home.searchBox} placeholder="Search recipes..." />
+      <input
+        type="text"
+        className={home.searchBox}
+        placeholder="Search recipes..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)} // Update search query
+      />
       <div className={home.recipeCardsContainer}>
         {recipes.map((recipe, index) => (
           <div className={home.recipeCard} key={index}>
