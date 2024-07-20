@@ -94,9 +94,9 @@ npm install</code></pre>
 </ol>
 
 <h2 id="screenshots">Screenshots</h2>
-<p><img src="path/to/login-screenshot.png" alt="Login Page"></p>
-<p><img src="path/to/search-screenshot.png" alt="Recipe Search"></p>
-<p><img src="path/to/details-screenshot.png" alt="Recipe Details"></p>
+![image](https://github.com/user-attachments/assets/1f1cd8b2-e7a6-4173-9eb7-c2e721d1c122)
+![image](https://github.com/user-attachments/assets/6d197a19-ccf9-45da-983d-e47186e90433)
+![image](https://github.com/user-attachments/assets/1cd31aa8-d017-4078-a40e-90c7a9a12a64)
 
 <h2 id="contributing">Contributing</h2>
 <p>Contributions are welcome! Please fork the repository and create a pull request with your changes.</p>
