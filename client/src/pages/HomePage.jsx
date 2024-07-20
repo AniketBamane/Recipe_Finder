@@ -19,7 +19,7 @@ const HomePage = () => {
 
   const addtoFavourite = async (recipeId) => {
     try {
-      const response = await fetch('http://localhost:3000/api/favourite/addtofavourite', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/favourite/addtofavourite`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ const HomePage = () => {
   const getAllRecipes = async (skip, search) => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:3000/api/recipe/getallrecipes?limit=8&skip=${skip}&search=${search}`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/recipe/getallrecipes?limit=8&skip=${skip}&search=${search}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -128,7 +128,7 @@ const HomePage = () => {
 
   // New share function
   const shareRecipe = (recipe) => {
-    const recipeUrl = `http://localhost:5173/recipe/${recipe._id}`;
+    const recipeUrl = `${import.meta.env.VITE_FRONTEND_URL}/recipe/${recipe._id}`;
     if (navigator.share) {
       navigator.share({
         title: recipe.name,

@@ -4,16 +4,18 @@ import Navbar from './Navbar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useRecipeContext } from '../store/recipeContext';
+import LoadingDots from '../components/LoadingDots';
 
 const RecipePage = () => {
   const {id} = useParams()
   const navigate = useNavigate()
   const {token} = useRecipeContext()
   const [recipe,setRecipe] = useState(null)
+  const [loading,setLoading] = useState(false)
   const getRecipe = async()=>{
     try{
       console.log(id)
-      const response = await fetch(`http://localhost:3000/api/recipe/getrecipe/${id}`,{
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/recipe/getrecipe/${id}`,{
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -40,12 +42,14 @@ const RecipePage = () => {
           color: "white",
         },
       })
+    }finally{
+      setLoading(false);
     }
   }
 
   const addtoFavourite = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/favourite/addtofavourite', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/favourite/addtofavourite`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +88,7 @@ const RecipePage = () => {
     }
   }
   const shareRecipe = (recipe) => {
-    const recipeUrl = `http://localhost:5173/recipe/${recipe._id}`;
+    const recipeUrl = `${import.meta.env.VITE_FRONTEND_URL}/recipe/${recipe._id}`;
     if (navigator.share) {
       navigator.share({
         title: recipe.name,
@@ -105,8 +109,13 @@ const RecipePage = () => {
   };
 
   useEffect(() =>{
+    setLoading(true);
     getRecipe();
   },[id])
+
+  if(loading){
+    return <LoadingDots />
+  }
 
   if (recipe === null) {
     return (

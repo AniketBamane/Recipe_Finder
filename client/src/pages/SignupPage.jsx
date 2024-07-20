@@ -18,7 +18,7 @@ const SignupPage = () => {
     if (username.length >=3 && email && password.length >=6) {
      if( password === confirmPassword){
 
-      const response = await fetch("http://localhost:3000/api/auth/verify-email",{
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/verify-email`,{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

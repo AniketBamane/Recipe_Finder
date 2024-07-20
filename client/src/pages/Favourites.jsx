@@ -13,7 +13,7 @@ const Favorites = () => {
 
   const removeFromFavourites = async(id)=>{
     try{
-      const response = await fetch(`http://localhost:3000/api/favourite/removefromfavourite/${id}`,{
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/favourite/removefromfavourite/${id}`,{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const Favorites = () => {
   }
 
   const shareRecipe = (recipe) => {
-    const recipeUrl = `http://localhost:5173/recipe/${recipe._id}`;
+    const recipeUrl = `${import.meta.env.VITE_FRONTEND_URL}/recipe/${recipe._id}`;
     if (navigator.share) {
       navigator.share({
         title: recipe.name,
@@ -72,7 +72,7 @@ const Favorites = () => {
 
   const getAllFavourites = async()=>{
     try{
-      const response = await fetch('http://localhost:3000/api/favourite/getfavourites',{
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/favourite/getfavourites`,{
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
