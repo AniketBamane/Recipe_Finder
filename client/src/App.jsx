@@ -8,6 +8,8 @@ import {Toaster} from "react-hot-toast"
 import Homepage from './pages/HomePage'
 import Favorites from './pages/Favourites'
 import RecipePage from './pages/RecipePage'
+import Logout from './pages/Logout'
+import NotFound from './pages/NotFound'
 
 function App() {
   return (
@@ -22,10 +24,11 @@ function App() {
     
     <Route element={<MainLayout/>}>
     <Route path="/" element={<Homepage />} />
+    <Route path='/logout' element={<Logout />} />
     <Route path='/favourites' element={<Favorites />} />
     <Route path="/recipe/:id" element={<RecipePage />} />
     </Route>
-    <Route path='*' element={<h1>no page</h1>} />
+    <Route path='*' element={<NotFound />} />
     </Routes>
     </BrowserRouter>
   )

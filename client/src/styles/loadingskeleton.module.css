@@ -1,0 +1,86 @@
+/* LoadingSkeleton.module.css */
+@keyframes skeletonLoading {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.skeletonWrapper {
+  height: 100vh;
+  width: 100vw;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.skeletonSearchBox {
+  width: 80%;
+  height: 40px;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeletonLoading 1.5s infinite linear;
+}
+
+.skeletonCardContainer {
+  display: grid;
+  gap: 20px;
+  width: 100%;
+}
+
+.skeletonCard {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+}
+
+.skeletonImage {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeletonLoading 1.5s infinite linear;
+}
+
+.skeletonText {
+  height: 20px;
+  width: 80%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeletonLoading 1.5s infinite linear;
+  margin-top: 10px;
+}
+
+.skeletonTag {
+  height: 25px;
+  width: 30%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeletonLoading 1.5s infinite linear;
+  margin-top: 10px;
+}
+
+@media (min-width: 1024px) {
+  .skeletonCardContainer {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .skeletonCardContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .skeletonCardContainer {
+    grid-template-columns: 1fr;
+  }
+}

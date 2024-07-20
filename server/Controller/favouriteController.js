@@ -33,7 +33,7 @@ const getFavourites = async (req, res) => {
     if(favourites.length > 0){
     res.status(200).json(favourites);
     }else{
-      res.status(404).json([]);
+      res.status(200).json([]);
     }
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });

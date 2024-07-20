@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../styles/veri.css"; // Import the CSS file
 import toast from "react-hot-toast";
-import { recipeContext } from "../store/recipeContext";
+import { useRecipeContext } from "../store/recipeContext";
 
 const VerificationPage = () => {
-  const {login} = useContext(recipeContext)
+  const {login} = useRecipeContext()
   const navigate = useNavigate()
   const location = useLocation();
   const [loading,setLoading] = useState(false)
@@ -107,6 +107,7 @@ const VerificationPage = () => {
         <i className="bx bxs-check-shield"></i>
       </header>
       <h4>Enter OTP Code</h4>
+      <p>check email to get OTP</p>
       <form onSubmit={handleSubmit}>
         <div className="input-field">
           {inputs.map((input, index) => (
@@ -124,6 +125,7 @@ const VerificationPage = () => {
         <button type="submit" className={isButtonActive ? "active" : ""} disabled={!isButtonActive}>
           {loading ? "verifying code ....":"Verify code"}
         </button>
+        <p className="login-link"><Link to={"/signup"}>go to sign up</Link></p>
       </form>
     </div>
   );

@@ -4,7 +4,8 @@ const getRecipes = async (req, res, next) => {
   const { limit, skip, search } = req.query;
   try {
     // Add a filter for the search term
-    const filter = search ? { name: new RegExp(search, 'i') } : {};
+    const filter = search ? {
+      ingredients: { $elemMatch: { $regex: search, $options: 'i' }}}: {};
     
     const recipes = await recipeModel.find(filter).skip(Number(skip)).limit(Number(limit));
     if (recipes.length > 0) {

@@ -3,12 +3,12 @@ import styles from '../styles/recipepage.module.css';
 import Navbar from './Navbar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { recipeContext } from '../store/recipeContext';
+import { useRecipeContext } from '../store/recipeContext';
 
 const RecipePage = () => {
   const {id} = useParams()
   const navigate = useNavigate()
-  const {token} = useContext(recipeContext)
+  const {token} = useRecipeContext()
   const [recipe,setRecipe] = useState(null)
   const getRecipe = async()=>{
     try{
@@ -83,6 +83,26 @@ const RecipePage = () => {
       });
     }
   }
+  const shareRecipe = (recipe) => {
+    const recipeUrl = `http://localhost:5173/recipe/${recipe._id}`;
+    if (navigator.share) {
+      navigator.share({
+        title: recipe.name,
+        text: `Check out this recipe: ${recipe.name}`,
+        url: recipeUrl,
+      }).catch((error) => console.error('Error sharing:', error));
+    } else {
+      navigator.clipboard.writeText(recipeUrl).then(() => {
+        toast.success('Recipe link copied to clipboard!', {
+          duration: 2000,
+          style: {
+            background: 'blue',
+            color: 'white',
+          },
+        });
+      });
+    }
+  };
 
   useEffect(() =>{
     getRecipe();
@@ -133,6 +153,7 @@ const RecipePage = () => {
             ))}
           </div>
           <div className={styles.recipeIngredients}>
+          <button onClick={() => shareRecipe(recipe)} className={styles.shareButton}>Share</button>
             <h2>Ingredients</h2>
             <ul>
               {recipe.ingredients.map((ingredient, index) => (
@@ -159,7 +180,7 @@ const RecipePage = () => {
                   display: "flex",
                   justifyContent: "center",
                   cursor: "pointer"
-                }} onClick={()=>addtoFavourite()} >❤️</div>
+                }} onClick={()=>addtoFavourite()} >❤️</div> 
         </div>
       </div>
     </div>

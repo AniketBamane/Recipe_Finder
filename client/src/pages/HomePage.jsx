@@ -1,18 +1,21 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, {  useEffect, useState, useRef } from 'react';
 import home from '../styles/homepage.module.css';
 import Navbar from './Navbar';
 import toast from 'react-hot-toast';
-import { recipeContext } from '../store/recipeContext';
 import { Link } from 'react-router-dom';
+import { useRecipeContext } from '../store/recipeContext';
+import LoadingDots from '../components/LoadingDots';
+import LoadingSkeleton from '../components/LoadingSkeleton';
 
 const HomePage = () => {
   const [recipes, setRecipes] = useState([]);
-  const { token } = useContext(recipeContext);
+  const { token } = useRecipeContext()
   const [skip, setSkip] = useState(0); // items to skip
   const [loading, setLoading] = useState(false); // loading state
   const [hasMore, setHasMore] = useState(true); // track if more recipes are available
-  const [searchQuery, setSearchQuery] = useState(''); // state for search query
+  const [searchQuery, setSearchQuery] = useState(""); // state for search query
   const loader = useRef(null);
+  const input = useRef(null);
 
   const addtoFavourite = async (recipeId) => {
     try {
@@ -36,7 +39,7 @@ const HomePage = () => {
         });
       } else {
         toast.success('Recipe added to favourites!', {
-          duration: 2000,
+          duration: 1000,
           style: {
             background: 'green',
             color: 'white',
@@ -77,7 +80,7 @@ const HomePage = () => {
         if (data.length === 0) {
           setHasMore(false); // No more recipes to load
         } else {
-          setRecipes((prevRecipes) => skip === 0 ? data : [...prevRecipes, ...data]); // append new recipes or reset on new search
+          setRecipes((prevRecipes) => search?  data: [...prevRecipes, ...data]); // append new recipes or reset on new search
         }
       }
     } catch (err) {
@@ -94,13 +97,19 @@ const HomePage = () => {
   }
 
   useEffect(() => {
-    setSkip(0); // Reset skip when search query changes
-    setHasMore(true); // Reset hasMore when search query changes
-    getAllRecipes(0, searchQuery); // Fetch with search query
-  }, [searchQuery]);
+    input.current.focus()
+    // setSkip(0); // Reset skip when search query changes
+    // setHasMore(true); // Reset hasMore when search query changes
+     if(!searchQuery){
+      getAllRecipes(skip, searchQuery);
+     } else{
+        getAllRecipes(0, searchQuery);
+     }// Fetch with search query
+  }, [searchQuery,skip]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
+ if(!searchQuery)
+    {   const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && !loading && hasMore) {
         setSkip((prevSkip) => prevSkip + 8);
       }
@@ -114,7 +123,7 @@ const HomePage = () => {
       if (loader.current) {
         observer.unobserve(loader.current);
       }
-    };
+    };}
   }, [loading, hasMore]);
 
   // New share function
@@ -143,11 +152,18 @@ const HomePage = () => {
     <div className={home.homepage}>
       <Navbar />
       <input
+      ref={input}
         type="text"
         className={home.searchBox}
         placeholder="Search recipes..."
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)} // Update search query
+        onChange={(e) => {
+          if(e.target.value == ""){
+            window.location.reload();
+          }else{
+            setSearchQuery(e.target.value)
+          }
+        }} // Update search query
       />
       <div className={home.recipeCardsContainer}>
         {recipes.map((recipe, index) => (
@@ -201,7 +217,7 @@ const HomePage = () => {
           </div>
         ))}
       </div>
-      {loading && <p>Loading...</p>}
+      {loading && <LoadingDots />}
       <div ref={loader} />
     </div>
   );

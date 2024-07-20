@@ -61,7 +61,8 @@ const SignupPage = () => {
 
   return (
     <div className="signup-container">
-      <h1>Sign Up</h1>
+      <h1>Good Food 😊</h1>
+      <h2 style={{marginBottom:"10%"}}>Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="username">Username</label>
@@ -82,6 +83,7 @@ const SignupPage = () => {
             type="email"
             id="email"
             name="email"
+            placeholder='enter your email'
             disabled={loading}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -108,6 +110,7 @@ const SignupPage = () => {
             id="confirmPassword"
             disabled={loading}
             name="confirmPassword"
+            placeholder=' re-enter your password'
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required

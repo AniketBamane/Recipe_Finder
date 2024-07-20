@@ -24,7 +24,7 @@ body {
   padding: 30px 65px;
   border-radius: 12px;
   row-gap: 20px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
 }
 .container header {
   height: 65px;
@@ -78,4 +78,12 @@ form button.active {
 }
 form button:hover {
   background: #fa9b15ce;
+}
+.login-link a {
+  color: #2528f3;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
 }

@@ -1,19 +1,19 @@
 import React, { useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import '../styles/login.css';
+import styles from '../styles/login.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { recipeContext } from '../store/recipeContext';
+import { useRecipeContext } from '../store/recipeContext';
 
 const LoginPage = () => {
-  const {login} = useContext(recipeContext)
+  const { login } = useRecipeContext();
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [loading,setLoading] = useState(false);
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -22,11 +22,13 @@ const LoginPage = () => {
 
     if (!validateUsernameOrEmail(usernameOrEmail)) {
       setErrorMessage('Please enter a valid username or email address.');
+      setLoading(false);
       return;
     }
 
     if (password.trim() === '') {
       setErrorMessage('Please enter your password.');
+      setLoading(false);
       return;
     }
 
@@ -53,8 +55,7 @@ const LoginPage = () => {
           },
           icon: '🥳',
         });
-        setLoading(false)
-        login(data.token)
+        login(data.token);
         navigate('/');
       } else {
         toast.error(data.message, {
@@ -64,12 +65,12 @@ const LoginPage = () => {
             color: "white",
           },
         });
-        setLoading(false)
       }
     } catch (error) {
       console.error('Error:', error);
       setErrorMessage('An error occurred. Please try again.');
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -80,42 +81,49 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-form">
-      <h1 className="recipe-finder-header">Recipe Finder</h1>
-      <h2><em>Great to have you back!</em></h2>
+    <div className={styles.signInContainer}>
+      <h1 className={styles.title}>Good Food 😊</h1>
+      <h2 className={styles.subtitle}><em>Great to have you back!</em></h2>
       <form onSubmit={handleLogin}>
-        <div className="form-group">
+        <div className={styles.form}>
           <label htmlFor="usernameOrEmail">Email:</label>
-          <input
-            type="text"
-            disabled={loading}
-            id="usernameOrEmail"
-            value={usernameOrEmail}
-            onChange={(e) => setUsernameOrEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
+          <div className={styles.inputField}>
+            <input
+              type="text"
+              disabled={loading}
+              placeholder=' enter your email...'
+              id="usernameOrEmail"
+              value={usernameOrEmail}
+              onChange={(e) => setUsernameOrEmail(e.target.value)}
+              required
+            />
+          </div>
           <label htmlFor="password">Password:</label>
+          <div className={styles.inputField}>
             <input
               type={passwordVisible ? 'text' : 'password'}
               id="password"
               value={password}
               disabled={loading}
+              placeholder=' enter your password...'
               onChange={(e) => setPassword(e.target.value)}
               required
             />
             <FontAwesomeIcon
               icon={passwordVisible ? faEye : faEyeSlash}
-              className="eye-icon"
+              className={styles.eyeIcon}
               onClick={() => setPasswordVisible(!passwordVisible)}
             />
+          </div>
+          <button disabled={loading} type="submit" className={styles.loginButton}>
+            {loading ? "Logging in ..." : "Log in"}
+          </button>
+          {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
         </div>
-
-        <button  disabled={loading} type="submit" className="login-button">{loading ? "logging in ..." :"Log in"}</button>
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
       </form>
-      <p className="signup-text">Don't have an account? <Link to={"/signup"}>Signup now</Link></p>
+      <p className={styles.signupLink}>
+        Don't have an account? <Link to={"/signup"} style={{color:"blue"}}>Signup now</Link>
+      </p>
     </div>
   );
 };

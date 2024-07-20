@@ -1,13 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import styles from '../styles/favourites.module.css';
 import Navbar from './Navbar';
-import { recipeContext } from '../store/recipeContext';
+import {  useRecipeContext } from '../store/recipeContext';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import LoadingSkeleton from '../components/LoadingSkeleton';
 
 const Favorites = () => {
-  const {token} = useContext(recipeContext);
+  const {token} = useRecipeContext();
   const [favRecipes, setFavRecipes] = useState([]);
+  const [loading,setLoading] = useState(false)
 
   const removeFromFavourites = async(id)=>{
     try{
@@ -30,7 +32,7 @@ const Favorites = () => {
       }
       setFavRecipes(favRecipes.filter(recipe=>recipe.recipeId._id!==id));
       toast.success('Recipe removed from favourites', {
-        duration: 2000,
+        duration: 1000,
         style: {
           background: "#4CAF50",
           color: "white",
@@ -46,6 +48,27 @@ const Favorites = () => {
       });
     }
   }
+
+  const shareRecipe = (recipe) => {
+    const recipeUrl = `http://localhost:5173/recipe/${recipe._id}`;
+    if (navigator.share) {
+      navigator.share({
+        title: recipe.name,
+        text: `Check out this recipe: ${recipe.name}`,
+        url: recipeUrl,
+      }).catch((error) => console.error('Error sharing:', error));
+    } else {
+      navigator.clipboard.writeText(recipeUrl).then(() => {
+        toast.success('Recipe link copied to clipboard!', {
+          duration: 2000,
+          style: {
+            background: 'blue',
+            color: 'white',
+          },
+        });
+      });
+    }
+  };
 
   const getAllFavourites = async()=>{
     try{
@@ -76,18 +99,37 @@ const Favorites = () => {
           color: "white",
         },
       });
+    }finally{
+      setLoading(false);
     }
   }
   
   useEffect(()=>{
+   setLoading(true);
     getAllFavourites();
+
   }, [token])
 
+  if(loading){
+    return <LoadingSkeleton />
+  }
   return (
     <div className={styles.favoritesPage}>
       <Navbar />
       {favRecipes.length <= 0 ? (
-        <h2>No favourites found</h2>
+        <h2 style={{
+  color: '#333',
+  fontSize: '1.5rem',
+  textAlign: 'center',
+  marginTop: '20px',
+  fontWeight: 'bold',
+  padding: '20px',
+  borderRadius: '8px',
+  backgroundColor: '#f9f9f9',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+}}>
+  No favourites found
+</h2>
       ):(
         <>
         <input
@@ -133,13 +175,13 @@ const Favorites = () => {
               }
               >see more..</div>
           </Link>
+          <button onClick={() => shareRecipe(recipe.recipeId)} className={styles.shareButton}>Share</button>
             </div>
           </div>
         ))}
       </div>
       </>
       )}
-      
     </div>
   );
 };

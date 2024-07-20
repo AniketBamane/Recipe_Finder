@@ -1,29 +1,34 @@
-import { createContext , useEffect, useState } from "react";
+import { createContext , useContext, useEffect, useState } from "react";
 
-const recipeContext = createContext();
+const RecipeContext = createContext();
 
 const ContextProvider = ({children}) =>{
-  const [token,setToken] = useState("");
+  const [token,setToken] = useState(localStorage.getItem("token"));
   const login = (token)=>{
     setToken(token);
-    localStorage.setItem("token", token);
+    localStorage.setItem("token", JSON.stringify(token));
   }
   const logout = ()=>{
     setToken(null);
     localStorage.removeItem("token");
   }
   const getToken = ()=>{
-    setToken(localStorage.getItem("token"));
+    const storedToken  = JSON.parse(localStorage.getItem("token"))
+    if (storedToken) setToken(storedToken);
   }
   useEffect(()=>{
     getToken()
-    console.log(token)
-  },[token])
+    // console.log(token)
+  },[])
   return (
-  <recipeContext.Provider value={{ login,logout,token}}>
+  <RecipeContext.Provider value={{token,login,logout}}>
     {children}
-  </recipeContext.Provider>
+  </RecipeContext.Provider>
   )
 }
 
-export { recipeContext, ContextProvider };
+const useRecipeContext = ()=>{
+  return useContext(RecipeContext);
+}
+
+export { RecipeContext, ContextProvider,useRecipeContext };
