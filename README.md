@@ -11,6 +11,7 @@
   <li><a href="#usage">Usage</a></li>
   <li><a href="#screenshots">Screenshots</a></li>
   <li><a href="#contributing">Contributing</a></li>
+  <li><a href="#team-members">Team</a></li>
 </ul>
 
 <h2 id="features">Features</h2>
@@ -59,7 +60,7 @@ cd recipe-finder</code></pre>
 npm install</code></pre>
   </li>
   <li>Create a <code>.env</code> file in the <code>backend</code> directory and add your environment variables:
-    <pre><code>PORT=5000
+    <pre><code>PORT=3000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 EMAIL_USER=your_email@example.com
@@ -73,11 +74,11 @@ EMAIL_PASS=your_email_password</code></pre>
 <h3>Frontend Setup</h3>
 <ol>
   <li>Install frontend dependencies:
-    <pre><code>cd ../frontend
+    <pre><code>cd ../client
 npm install</code></pre>
   </li>
   <li>Create a <code>.env</code> file in the <code>frontend</code> directory and add your environment variables:
-    <pre><code>VITE_BASE_URL=http://localhost:5000</code></pre>
+    <pre><code>VITE_BACKEND_URL=http://localhost:3000</code></pre>
   </li>
   <li>Start the frontend development server:
     <pre><code>npm run dev</code></pre>
@@ -107,4 +108,14 @@ npm install</code></pre>
   <li>Open a Pull Request</li>
 </ol>
 
+<h2 id="team-members">Team Members</h2>
+<ul>
+  <li>Eshwar Gunisetti - Full Stack Web Developer</li>
+  <li>Kirti Swami - Frontend Developer</li>
+  <li>Mohd Sufiyan - Frontend Developer </li>
+  <li>Pardeep - Backend Developer</li>
+  <li>Shantha Priya T - Full Stack Web Developer</li>
+  <li>Taiba Khan - Frontend Developer</li>
+  <li>Aniket Bamane  - Full Stack Web Developer</li>
+</ul>
 
