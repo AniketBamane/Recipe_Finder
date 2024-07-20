@@ -128,7 +128,7 @@ const HomePage = () => {
 
   // New share function
   const shareRecipe = (recipe) => {
-    const recipeUrl = `${import.meta.env.VITE_FRONTEND_URL}/recipe/${recipe._id}`;
+    const recipeUrl = `${window.location.protocol}//${window.location.host}/recipe/${recipe._id}`;
     if (navigator.share) {
       navigator.share({
         title: recipe.name,
