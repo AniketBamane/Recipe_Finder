@@ -17,6 +17,7 @@ const LoginPage = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
+    console.log('Login button clicked');
     setLoading(true);
     setErrorMessage('');
 
