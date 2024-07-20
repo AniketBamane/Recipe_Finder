@@ -14,7 +14,6 @@ const RecipePage = () => {
   const [loading,setLoading] = useState(false)
   const getRecipe = async()=>{
     try{
-      console.log(id)
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/recipe/getrecipe/${id}`,{
         method: 'GET',
         headers: {
@@ -31,7 +30,6 @@ const RecipePage = () => {
           },
         });
       } else {
-        console.log(data)
         setRecipe(data);
       }
     }catch(err){
@@ -49,6 +47,12 @@ const RecipePage = () => {
 
   const addtoFavourite = async () => {
     try {
+      toast.loading('Recipe adding to favourites...', {
+        duration: 1000,
+        style: {
+          color: 'black',
+        },
+      });
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/favourite/addtofavourite`, {
         method: 'POST',
         headers: {
@@ -61,7 +65,7 @@ const RecipePage = () => {
       if (!response.ok) {
         console.log(data);
         toast.error(data.message, {
-          duration: 2000,
+          duration: 1000,
           style: {
             background: "#FF474C",
             color: "white",
@@ -69,7 +73,7 @@ const RecipePage = () => {
         });
       } else {
         toast.success('Recipe added to favourites!', {
-          duration: 2000,
+          duration: 1000,
           style: {
             background: 'green',
             color: 'white',

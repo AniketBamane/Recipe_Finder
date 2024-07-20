@@ -19,6 +19,12 @@ const HomePage = () => {
 
   const addtoFavourite = async (recipeId) => {
     try {
+      toast.loading('Recipe adding to favourites...', {
+        duration: 1000,
+        style: {
+          color: 'black',
+        },
+      });
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/favourite/addtofavourite`, {
         method: 'POST',
         headers: {

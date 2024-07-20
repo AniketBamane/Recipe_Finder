@@ -13,6 +13,12 @@ const Favorites = () => {
 
   const removeFromFavourites = async(id)=>{
     try{
+      toast.loading('Recipe removing from favourites', {
+        duration: 1000,
+        style: {
+          color: "black",
+        },
+      });
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/favourite/removefromfavourite/${id}`,{
         method: 'POST',
         headers: {
@@ -89,7 +95,6 @@ const Favorites = () => {
           },
         });
       }
-      console.log(data)
       setFavRecipes([...data]);
     }catch(err){
       toast.error(err.message, {
@@ -132,11 +137,7 @@ const Favorites = () => {
 </h2>
       ):(
         <>
-        <input
-        type="text"
-        className={styles.searchBox}
-        placeholder="Search recipes of your favourites..."
-      />
+        <h2 style={{marginBottom:"1rem"}}>Your favourite recipes 😋 ...</h2>
       <div className={styles.recipeCardsContainer}>
         {favRecipes.map((recipe, index) => (
           <div className={styles.recipeCard} key={index}>
