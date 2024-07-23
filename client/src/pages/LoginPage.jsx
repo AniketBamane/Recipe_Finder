@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import styles from '../styles/login.module.css';
@@ -19,6 +19,12 @@ const LoginPage = () => {
     event.preventDefault();
     setLoading(true);
     setErrorMessage('');
+
+    if(password.length < 6 ){
+      setErrorMessage('Password must be at least 6 characters long.');
+      setLoading(false);
+      return;
+    }
 
     if (!validateUsernameOrEmail(usernameOrEmail)) {
       setErrorMessage('Please enter a valid username or email address.');
@@ -84,7 +90,6 @@ const LoginPage = () => {
     <div className={styles.signInContainer}>
       <h1 className={styles.title}>Good Food 😊</h1>
       <h2 className={styles.subtitle}><em>Great to have you back!</em></h2>
-      <form onSubmit={handleLogin}>
         <div className={styles.form}>
           <label htmlFor="usernameOrEmail">Email:</label>
           <div className={styles.inputField}>
@@ -115,12 +120,13 @@ const LoginPage = () => {
               onClick={() => setPasswordVisible(!passwordVisible)}
             />
           </div>
-          <button disabled={loading} type="submit" className={styles.loginButton}>
+          <button disabled={loading} type="submit" className={styles.loginButton}
+          onClick={handleLogin}
+          >
             {loading ? "Logging in ..." : "Log in"}
           </button>
           {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
         </div>
-      </form>
       <p className={styles.signupLink}>
         Don't have an account? <Link to={"/signup"} style={{color:"blue"}}>Signup now</Link>
       </p>
@@ -129,3 +135,27 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+
+
+
+// const LoginPage = () => {
+//   return (
+//     <div>
+//       <h1>Good Food</h1>
+//       <h2>Login Form</h2>
+//       <h3>great to have you back</h3>
+//       <form onSubmit={()=>{
+//         console.log("form submitted !")
+//       }}>
+//       <label htmlFor="email">Email:</label>
+//       <input type="text" id="email" placeholder="enter your email..." />
+//       <label htmlFor="password">Password:</label>
+//       <input type="password" id="password" placeholder="enter your password..." />
+//       <button type="submit">Login</button>
+//       </form>
+//     </div>
+//   )
+// }
+
+// export default LoginPage

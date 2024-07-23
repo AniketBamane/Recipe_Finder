@@ -71,3 +71,10 @@ button:hover {
 .login-link a:hover {
   text-decoration: underline;
 }
+
+.error-message{
+  color: red;
+  margin-top: 5px;
+  font-size: 12px;
+  text-align: center;
+}

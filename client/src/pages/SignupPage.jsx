@@ -14,6 +14,14 @@ const SignupPage = () => {
 
   const handleSubmit =async (event) => {
     event.preventDefault();
+    if(username.length <3 ){
+      setMessage("username must be at least 3 characters")
+      return;
+    }
+     if(password.length < 6){
+      setMessage("password must be at least 6 characters")
+      return;
+     }
     setLoading(true);
     if (username.length >=3 && email && password.length >=6) {
      if( password === confirmPassword){
@@ -63,7 +71,6 @@ const SignupPage = () => {
     <div className="signup-container">
       <h1>Good Food 😊</h1>
       <h2 style={{marginBottom:"10%"}}>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="username">Username</label>
           <input
@@ -116,9 +123,8 @@ const SignupPage = () => {
             required
           />
         </div>
-        <button disabled={loading} type="submit">{loading ? "sending email for verification":"Sign Up"}</button>
-        {message && <p id="message" style={{ color: messageColor }}>{message}</p>}
-      </form>
+        <button disabled={loading} type="submit" onClick={handleSubmit}>{loading ? "sending email for verification":"Sign Up"}</button>
+        {message && <p id="message" className='error-message'>{message}</p>}
       <p className="login-link">Already have an account? <Link to={"/signin"}>Login</Link></p>
     </div>
   );

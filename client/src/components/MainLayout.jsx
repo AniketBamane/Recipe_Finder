@@ -11,7 +11,7 @@ const MainLayout = () => {
     }
   },[token])
   return (
-        <Outlet />
+    <Outlet />
   )
 }
 
