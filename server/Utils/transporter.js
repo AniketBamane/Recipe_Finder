@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-export const transporter = nodemailer.createTransport({
+ const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 587,
   secure: false, // true for 465, false for other ports
@@ -14,3 +14,5 @@ export const transporter = nodemailer.createTransport({
   greetingTimeout: 30000,
   socketTimeout: 60000,
 });
+
+module.exports = transporter;
