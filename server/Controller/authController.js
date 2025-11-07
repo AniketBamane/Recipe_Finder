@@ -57,20 +57,28 @@ const verifyEmail = async(req, res, next) => {
         `,
       };
       
+      let responseSent = false;
+      
       console.log('[AUTH] Sending verification email to:', email);
       const timeout = setTimeout(() => {
-        console.log('[AUTH] Email sending timeout for:', email);
-        return res.status(408).json({ message: 'Email sending timeout. Please try again.' });
+        if (!responseSent) {
+          responseSent = true;
+          console.log('[AUTH] Email sending timeout for:', email);
+          return res.status(408).json({ message: 'Email sending timeout. Please try again.' });
+        }
       }, 15000);
       
       transporter.sendMail(mailOptions, (error, info) => {
         clearTimeout(timeout);
-        if (error) {
-          console.log('[AUTH] Email sending failed:', error.message);
-          return res.status(500).json({ message: 'Failed to send email. Please try again.' });
+        if (!responseSent) {
+          responseSent = true;
+          if (error) {
+            console.log('[AUTH] Email sending failed:', error.message);
+            return res.status(500).json({ message: 'Failed to send email. Please try again.' });
+          }
+          console.log('[AUTH] Email sent successfully to:', email);
+          res.status(200).json({ message: ' Verification email sent',verificationCode : random})
         }
-        console.log('[AUTH] Email sent successfully to:', email);
-        res.status(200).json({ message: ' Verification email sent',verificationCode : random})
       });
     }catch(e){
       console.log('[AUTH] Email verification error:', e.message);
