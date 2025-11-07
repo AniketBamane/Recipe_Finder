@@ -17,22 +17,26 @@ const LoginPage = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
+    console.log('[FRONTEND] Login attempt started for:', usernameOrEmail);
     setLoading(true);
     setErrorMessage('');
 
     if(password.length < 6 ){
+      console.log('[FRONTEND] Login validation failed: Password too short');
       setErrorMessage('Password must be at least 6 characters long.');
       setLoading(false);
       return;
     }
 
     if (!validateUsernameOrEmail(usernameOrEmail)) {
+      console.log('[FRONTEND] Login validation failed: Invalid email format');
       setErrorMessage('Please enter a valid username or email address.');
       setLoading(false);
       return;
     }
 
     if (password.trim() === '') {
+      console.log('[FRONTEND] Login validation failed: Empty password');
       setErrorMessage('Please enter your password.');
       setLoading(false);
       return;
@@ -44,6 +48,7 @@ const LoginPage = () => {
     };
 
     try {
+      console.log('[FRONTEND] Sending login request to backend');
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/signin`, {
         method: 'POST',
         headers: {
@@ -52,7 +57,10 @@ const LoginPage = () => {
         body: JSON.stringify(formData)
       });
       const data = await response.json();
+      console.log('[FRONTEND] Login response received:', { status: response.status, message: data.message });
+      
       if (response.ok) {
+        console.log('[FRONTEND] Login successful, redirecting to home');
         toast.success('Account logged in successfully', {
           duration: 2000,
           style: {
@@ -64,6 +72,7 @@ const LoginPage = () => {
         login(data.token);
         navigate('/');
       } else {
+        console.log('[FRONTEND] Login failed:', data.message);
         toast.error(data.message, {
           duration: 2000,
           style: {
@@ -73,7 +82,7 @@ const LoginPage = () => {
         });
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('[FRONTEND] Login error:', error);
       setErrorMessage('An error occurred. Please try again.');
     } finally {
       setLoading(false);

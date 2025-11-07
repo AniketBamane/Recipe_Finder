@@ -65,16 +65,25 @@ const HomePage = () => {
   }
 
   const getAllRecipes = async (skip, search) => {
+    console.log('[FRONTEND] Getting recipes:', { skip, search, backendUrl: import.meta.env.VITE_BACKEND_URL });
     setLoading(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/recipe/getallrecipes?limit=8&skip=${skip}&search=${search}`, {
+      const url = `${import.meta.env.VITE_BACKEND_URL}/api/recipe/getallrecipes?limit=8&skip=${skip}&search=${search}`;
+      console.log('[FRONTEND] Fetching from URL:', url);
+      
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
         }
       });
+      
+      console.log('[FRONTEND] Recipe API response status:', response.status);
       const data = await response.json();
+      console.log('[FRONTEND] Recipe API response data:', data);
+      
       if (!response.ok) {
+        console.log('[FRONTEND] Recipe API error:', data.message);
         toast.error(data.message, {
           duration: 2000,
           style: {
@@ -84,12 +93,15 @@ const HomePage = () => {
         });
       } else {
         if (data.length === 0) {
+          console.log('[FRONTEND] No more recipes to load');
           setHasMore(false); // No more recipes to load
         } else {
+          console.log('[FRONTEND] Setting recipes:', data.length, 'recipes');
           setRecipes((prevRecipes) => search?  data: [...prevRecipes, ...data]); // append new recipes or reset on new search
         }
       }
     } catch (err) {
+      console.log('[FRONTEND] Recipe API fetch error:', err);
       toast.error(err.message, {
         duration: 2000,
         style: {
@@ -172,9 +184,21 @@ const HomePage = () => {
         }} // Update search query
       />
       <div className={home.recipeCardsContainer}>
-        {recipes.map((recipe, index) => (
+        {recipes.length === 0 && !loading ? (
+          <div style={{ textAlign: 'center', fontSize: '24px', color: '#666', marginTop: '50px' }}>
+            No data found
+          </div>
+        ) : (
+          recipes.map((recipe, index) => (
           <div className={home.recipeCard} key={index}>
-            <img src={recipe.image} alt={recipe.name} className={home.recipeImage} />
+            <img 
+              src={recipe.image} 
+              alt={recipe.name} 
+              className={home.recipeImage}
+              onError={(e) => {
+                e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg==';
+              }}
+            />
             <div className={home.recipeInfo}>
               <div style={{ display: 'flex', justifyContent: "space-between" }}>
                 <h2 className={home.recipeName}>{recipe.name}</h2>
@@ -221,7 +245,8 @@ const HomePage = () => {
               <button onClick={() => shareRecipe(recipe)} className={home.shareButton}>Share</button>
             </div>
           </div>
-        ))}
+        ))
+        )}
       </div>
       {loading && <LoadingDots />}
       <div ref={loader} />

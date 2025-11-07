@@ -14,18 +14,22 @@ const SignupPage = () => {
 
   const handleSubmit =async (event) => {
     event.preventDefault();
+    console.log('[FRONTEND] Signup attempt started for:', { username, email });
+    
     if(username.length <3 ){
+      console.log('[FRONTEND] Signup validation failed: Username too short');
       setMessage("username must be at least 3 characters")
       return;
     }
      if(password.length < 6){
+      console.log('[FRONTEND] Signup validation failed: Password too short');
       setMessage("password must be at least 6 characters")
       return;
      }
     setLoading(true);
     if (username.length >=3 && email && password.length >=6) {
      if( password === confirmPassword){
-
+      console.log('[FRONTEND] Sending email verification request');
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/verify-email`,{
         method: 'POST',
         headers: {
@@ -34,7 +38,10 @@ const SignupPage = () => {
         body: JSON.stringify({email})
       })
       const data = await response.json();
+      console.log('[FRONTEND] Email verification response:', { status: response.status, message: data.message });
+      
       if(response.ok){
+        console.log('[FRONTEND] Email verification successful, navigating to verification page');
         navigate("/verification",{
           state:{
           email,
@@ -51,16 +58,19 @@ const SignupPage = () => {
       setConfirmPassword('');
       setLoading(false);
       }else{
+        console.log('[FRONTEND] Email verification failed:', data.message);
         setMessage(data.message);
         setMessageColor('red');
         setLoading(false);
       }
      }else{
+      console.log('[FRONTEND] Signup validation failed: Passwords do not match');
       setMessage('Passwords do not match!');
       setMessageColor('red');
       setLoading(false);
      }
     } else {
+      console.log('[FRONTEND] Signup validation failed: Missing required fields');
       setMessage('Please fill out all fields correctly.');
       setMessageColor('red');
       setLoading(false);
